@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:newsapp/model/article_response.dart';
 import 'package:newsapp/model/source_response.dart';
 
 class NewsRepository {
@@ -26,5 +27,62 @@ class NewsRepository {
        print("Exception occured : $error stackTrace: $stacktrace");
        return SourceResponse.withError(error);
      }
+  }
+
+  Future<ArticleResponse> getTopHeadlines() async {
+    var params = {
+      "apiKey" : apiKey,
+      "country" : "us",
+    };
+
+    try {
+      Response response = await _dio.get(getTopHeadlinesUrl, queryParameters: params);
+      return ArticleResponse.fromJson(response.data);
+    } catch (error){
+      return ArticleResponse.withError(error);
+    }
+  }
+
+  Future<ArticleResponse> getHotNews() async {
+    var params = {
+      "apiKey" : apiKey,
+      "q" : "apple",
+      "sortBy" : "popularity"
+    };
+
+    try {
+      Response response = await _dio.get(everythingUrl, queryParameters: params);
+      return ArticleResponse.fromJson(response.data);
+    } catch (error){
+      return ArticleResponse.withError(error);
+    }
+  }
+
+  Future<ArticleResponse> getSourceNews(String sourceId) async {
+    var params = {
+      "apiKey" : apiKey,
+      "sources" : sourceId
+    };
+
+    try {
+      Response response = await _dio.get(getTopHeadlinesUrl, queryParameters: params);
+      return ArticleResponse.fromJson(response.data);
+    } catch (error){
+      return ArticleResponse.withError(error);
+    }
+  }
+
+  Future<ArticleResponse> search(String searchValue) async {
+    var params = {
+      "apiKey" : apiKey,
+      "q" : searchValue
+    };
+
+    try {
+      Response response = await _dio.get(getTopHeadlinesUrl, queryParameters: params);
+      return ArticleResponse.fromJson(response.data);
+    } catch (error){
+      return ArticleResponse.withError(error);
+    }
   }
 }

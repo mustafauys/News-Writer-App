@@ -1,4 +1,4 @@
-import 'article.dart';
+import 'package:newsapp/model/article.dart';
 
 class ArticleResponse {
   final List<ArticleModel> articles;
@@ -7,9 +7,8 @@ class ArticleResponse {
   ArticleResponse(this.articles, this.error);
 
   ArticleResponse.fromJson(Map<String, dynamic> json)
-      : articles = (json["articles"] as List)
-            .map((i) => new ArticleModel.fromJson(i))
-            .toList(),
+      : articles =
+            (json["articles"] as List).map((i) => new ArticleModel.fromJson(i)).toList(),
         error = "";
 
   ArticleResponse.withError(String errorValue)

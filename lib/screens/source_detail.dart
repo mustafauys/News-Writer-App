@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:newsapp/bloc/get_source_news_bloc.dart';
 import 'package:newsapp/elements/loader.dart';
 import 'package:newsapp/model/article.dart';
 import 'package:newsapp/model/article_response.dart';
 import 'package:newsapp/model/source.dart';
-import 'package:newsapp/style/theme.dart' as Style;
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'news_detail.dart';
@@ -24,73 +24,77 @@ class _SourceDetailState extends State<SourceDetail> {
     super.initState();
     getSourceNewsBloc..getSourceNews(source.id);
   }
+
   @override
   void dispose() {
     getSourceNewsBloc.drainStream();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0),
         child: AppBar(
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          ),
-          centerTitle: false,
-          elevation: 0.0,
-          backgroundColor: Style.Colors.mainColor,
-          title: new Text(
-           "",
-          )
-        ),
+            iconTheme: IconThemeData(
+              color: Colors.white,
+            ),
+            centerTitle: false,
+            elevation: 0.0,
+            backgroundColor: HexColor("1a1a2e"),
+            title: new Text(
+              "",
+            )),
       ),
       body: Column(
         children: [
           Container(
             padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-            color: Style.Colors.mainColor,
+            color: HexColor("1a1a2e"),
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 Hero(
                   tag: source.id,
-                                  child: SizedBox(
-                    height: 80.0,
-                    width: 80.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 2.0, color: Colors.white),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: AssetImage("assets/logos/${source.id}.png"),
-                              fit: BoxFit.cover)),
-                    )),
+                  child: SizedBox(
+                      height: 80.0,
+                      width: 80.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 2.0, color: Colors.white),
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image:
+                                    AssetImage("assets/logos/${source.id}.png"),
+                                fit: BoxFit.cover)),
+                      )),
                 ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                    source.name, style: TextStyle(
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  source.name,
+                  style: TextStyle(
                       color: Colors.white,
                       fontSize: 16.0,
-                      fontWeight: FontWeight.bold
-                    ),
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  source.description,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.0,
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                    source.description, style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.0,
-                    ),
-                  )
+                )
               ],
             ),
           ),
-          Expanded(child: StreamBuilder<ArticleResponse>(
+          Expanded(
+              child: StreamBuilder<ArticleResponse>(
             stream: getSourceNewsBloc.subject.stream,
             builder: (context, AsyncSnapshot<ArticleResponse> snapshot) {
               if (snapshot.hasData) {
@@ -110,6 +114,7 @@ class _SourceDetailState extends State<SourceDetail> {
       ),
     );
   }
+
   Widget _buildSourceNewsWidget(ArticleResponse data) {
     List<ArticleModel> articles = data.articles;
 
@@ -133,12 +138,12 @@ class _SourceDetailState extends State<SourceDetail> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-               Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailNews(
-                                article: articles[index],
-                              )));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailNews(
+                              article: articles[index],
+                            )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -158,9 +163,7 @@ class _SourceDetailState extends State<SourceDetail> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          
-                          Text(
-                              articles[index].title,
+                          Text(articles[index].title,
                               maxLines: 3,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -175,8 +178,8 @@ class _SourceDetailState extends State<SourceDetail> {
                                 Row(
                                   children: <Widget>[
                                     Text(
-                                        timeUntil(
-                                            DateTime.parse(articles[index].date)),
+                                        timeUntil(DateTime.parse(
+                                            articles[index].date)),
                                         style: TextStyle(
                                             color: Colors.black26,
                                             fontWeight: FontWeight.bold,
@@ -193,8 +196,7 @@ class _SourceDetailState extends State<SourceDetail> {
                         padding: EdgeInsets.only(right: 10.0),
                         width: MediaQuery.of(context).size.width * 2 / 5,
                         height: 130,
-                        child: 
-                        FadeInImage.assetNetwork(
+                        child: FadeInImage.assetNetwork(
                             alignment: Alignment.topCenter,
                             placeholder: 'assets/img/placeholder.jpg',
                             image: articles[index].img == null
@@ -209,7 +211,8 @@ class _SourceDetailState extends State<SourceDetail> {
             );
           });
   }
+
   String timeUntil(DateTime date) {
-  return timeago.format(date, allowFromNow: true, locale: 'en');
-}
+    return timeago.format(date, allowFromNow: true, locale: 'en');
+  }
 }

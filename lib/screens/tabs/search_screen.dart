@@ -20,75 +20,88 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
     searchBloc..search("");
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
-        child: TextFormField(
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.black),
-                      controller: _searchController,
-                      onChanged: (changed) {
-                        searchBloc..search(_searchController.text);
-                      },
-                      decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        suffixIcon: _searchController.text.length > 0 ? IconButton(
-                  icon: Icon(EvaIcons.backspaceOutline, color: Colors.grey[500], size: 16.0,),
-                  onPressed: () {
-                    setState(() {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      _searchController.clear();
-                      searchBloc..search(_searchController.text);
-                    });
-                  }): Icon(EvaIcons.searchOutline, color: Colors.grey[500], size: 16.0,),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.grey[100].withOpacity(0.3)),
-                            borderRadius: BorderRadius.circular(30.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.grey[100].withOpacity(0.3)),
-                            borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(
-                            left: 15.0, right: 10.0),
-                        labelText: "Search...",
-                        hintStyle: TextStyle(
-                            fontSize: 14.0,
-                            color: Style.Colors.grey,
-                            fontWeight: FontWeight.w500),
-                        labelStyle: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      autocorrect: false,
-                      // ignore: deprecated_member_use
-                      autovalidate: true,
-                    ),
-          ),
-        Expanded(child: StreamBuilder<ArticleResponse>(
-            stream: searchBloc.subject.stream,
-            builder: (context, AsyncSnapshot<ArticleResponse> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.error != null &&
-                    snapshot.data.error.length > 0) {
-                  return Container();
-                }
-                return _buildSourceNewsWidget(snapshot.data);
-              } else if (snapshot.hasError) {
-                return Container();
-              } else {
-                return buildLoadingWidget();
-              }
+          padding: const EdgeInsets.only(
+              left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
+          child: TextFormField(
+            style: TextStyle(fontSize: 14.0, color: Colors.black),
+            controller: _searchController,
+            onChanged: (changed) {
+              searchBloc..search(_searchController.text);
             },
-          )) 
+            decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              filled: true,
+              fillColor: Colors.grey[100],
+              suffixIcon: _searchController.text.length > 0
+                  ? IconButton(
+                      icon: Icon(
+                        EvaIcons.backspaceOutline,
+                        color: Colors.grey[500],
+                        size: 16.0,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          _searchController.clear();
+                          searchBloc..search(_searchController.text);
+                        });
+                      })
+                  : Icon(
+                      EvaIcons.searchOutline,
+                      color: Colors.grey[500],
+                      size: 16.0,
+                    ),
+              enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      new BorderSide(color: Colors.grey[100].withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(30.0)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      new BorderSide(color: Colors.grey[100].withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(30.0)),
+              contentPadding: EdgeInsets.only(left: 15.0, right: 10.0),
+              labelText: "Search...",
+              hintStyle: TextStyle(
+                  fontSize: 14.0,
+                  color: Style.Colors.grey,
+                  fontWeight: FontWeight.w500),
+              labelStyle: TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500),
+            ),
+            autocorrect: false,
+            // ignore: deprecated_member_use
+            autovalidate: true,
+          ),
+        ),
+        Expanded(
+            child: StreamBuilder<ArticleResponse>(
+          stream: searchBloc.subject.stream,
+          builder: (context, AsyncSnapshot<ArticleResponse> snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data.error != null &&
+                  snapshot.data.error.length > 0) {
+                return Container();
+              }
+              return _buildSourceNewsWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Container();
+            } else {
+              return buildLoadingWidget();
+            }
+          },
+        ))
       ],
     );
   }
+
   Widget _buildSourceNewsWidget(ArticleResponse data) {
     List<ArticleModel> articles = data.articles;
 
@@ -112,12 +125,12 @@ class _SearchScreenState extends State<SearchScreen> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-               Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailNews(
-                                article: articles[index],
-                              )));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailNews(
+                              article: articles[index],
+                            )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -137,9 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          
-                          Text(
-                              articles[index].title,
+                          Text(articles[index].title,
                               maxLines: 3,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -154,8 +165,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 Row(
                                   children: <Widget>[
                                     Text(
-                                        timeUntil(
-                                            DateTime.parse(articles[index].date)),
+                                        timeUntil(DateTime.parse(
+                                            articles[index].date)),
                                         style: TextStyle(
                                             color: Colors.black26,
                                             fontWeight: FontWeight.bold,
@@ -172,8 +183,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         padding: EdgeInsets.only(right: 10.0),
                         width: MediaQuery.of(context).size.width * 2 / 5,
                         height: 130,
-                        child: 
-                        FadeInImage.assetNetwork(
+                        child: FadeInImage.assetNetwork(
                             alignment: Alignment.topCenter,
                             placeholder: 'assets/img/placeholder.jpg',
                             image: articles[index].img == null
@@ -188,7 +198,8 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           });
   }
+
   String timeUntil(DateTime date) {
-  return timeago.format(date, allowFromNow: true, locale: 'en');
-}
+    return timeago.format(date, allowFromNow: true, locale: 'en');
+  }
 }

@@ -1,5 +1,3 @@
-# News Writer App
-
 ## Screens
 
 ![HomeScreen](https://user-images.githubusercontent.com/51384613/106803948-cce99900-6675-11eb-9344-087c324f0d3e.jpg)

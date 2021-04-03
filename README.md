@@ -1,3 +1,7 @@
+# News Writer Application in Flutter
+
+This application keeps up-to-date world news. You can view the news of the news channel we want.
+
 ## Screens
 
 ![HomeScreen](https://user-images.githubusercontent.com/51384613/106803948-cce99900-6675-11eb-9344-087c324f0d3e.jpg)

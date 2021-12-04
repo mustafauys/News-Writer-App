@@ -1,4 +1,3 @@
-
 *.class
 *.log
 *.pyc
@@ -8,7 +7,6 @@
 .buildlog/
 .history
 .svn/
-
 
 *.iml
 *.ipr
@@ -27,11 +25,11 @@
 .pub/
 /build/
 
-# Web related
+
 lib/generated_plugin_registrant.dart
 
-# Symbolication related
+
 app.*.symbols
 
-# Obfuscation related
+
 app.*.map.json
